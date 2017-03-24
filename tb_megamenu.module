@@ -226,7 +226,8 @@ function template_preprocess_tb_megamenu_subnav(&$vars) {
   $vars['lis'] = array();
   foreach ($col as $tb_item) {
     $item = TBMegaMenuBuilder::getMenuItem($vars['menu_name'], $tb_item['plugin_id']);
-    $vars['lis'][] = array(
+    $weight = $item->link->getWeight();
+    $vars['lis'][$weight] = array(
       '#theme' => 'tb_megamenu_item',
       '#menu_name' => $vars['menu_name'],
       '#level' => $level + 1,
@@ -237,6 +238,9 @@ function template_preprocess_tb_megamenu_subnav(&$vars) {
       '#section' => $vars['section'],
     );
   }
+  // Sort items by link weights as array keys.
+  ksort($vars['lis']);
+
   $vars['attributes'] = new Attribute();
   $vars['attributes']['class'] = array();
   $theme_name = str_replace('_', '-', $vars['theme_hook_original']);
@@ -441,7 +445,8 @@ function template_preprocess_tb_megamenu_nav(&$vars) {
   $vars['lis'] = array();
   foreach ($items as $item) {
     if ($item->link->isEnabled()) {
-      $vars['lis'][] = array(
+      $weight = $item->link->getWeight();
+      $vars['lis'][$weight] = array(
         '#theme' => 'tb_megamenu_item',
         '#menu_name' => $vars['menu_name'],
         '#level' => $level + 1,
@@ -453,6 +458,8 @@ function template_preprocess_tb_megamenu_nav(&$vars) {
       );
     }
   }
+  // Sort items by link weights as array keys.
+  ksort($vars['lis']);
 
   $vars['attributes'] = new Attribute();
   $vars['attributes']['class'] = array();
