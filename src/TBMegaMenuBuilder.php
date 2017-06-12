@@ -435,11 +435,15 @@ class TBMegaMenuBuilder {
    * @param string $col
    * @param type $item
    */
-  public static function InsertTBMenuItem(&$item_config, $row, $col, $item) {
+public static function InsertTBMenuItem(&$item_config, $row, $col, $item) {
     $i = 0;
     $col_content = isset($item_config['rows_content'][$row][$col]['col_content']) ? $item_config['rows_content'][$row][$col]['col_content'] : array();
-    while ($i < count($col_content) && $col_content[$i]['weight'] < $item->link->getWeight()) {
-      $i++;
+    current($col_content);
+    foreach ($col_content as $key => $value ) {
+      if (!empty($value['weight']) && $value['weight'] <  $item->link->getWeight()) {
+        next($col_content);
+        $i = key($col_content);
+      }
     }
     for ($j = count($col_content); $j > $i; $j--) {
       $item_config['rows_content'][$row][$col]['col_content'][$j] = $item_config['rows_content'][$row][$col]['col_content'][$j - 1];
