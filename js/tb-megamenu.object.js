@@ -353,6 +353,57 @@ Drupal.TBMegaMenu = Drupal.TBMegaMenu || {};
     show_toolbox($col);
   };
 
+  actions.rowUp = function() {
+    if ( !currentSelected ) {
+      return;
+    }
+    var $row = $(currentSelected.closest('.tb-megamenu-row'));
+    var $rows = $row.parent();
+    var $prevRow = $row.prev();
+    if ( $prevRow.length == 0 ) {
+      return;
+    }
+    var trow = $row.clone();
+    var trow1 = $prevRow.clone();
+    $row.replaceWith(trow1);
+    $prevRow.replaceWith(trow);
+
+    // Reset all events on new structure.
+    megamenu = $('#tb-megamenu-admin-mm-container').find('.tb-megamenu');
+    nav_items = megamenu.find('ul[class*="level"]>li>:first-child');
+    nav_subs = megamenu.find('.nav-child');
+    nav_cols = megamenu.find('[class*="span"]');
+    nav_all = nav_items.add(nav_subs).add(nav_cols);
+    bindEvents(nav_all);
+    currentSelected = $rows.find('.selected');
+  }
+
+  actions.rowDown = function() {
+    if ( !currentSelected ) {
+      return;
+    }
+    var $row = $(currentSelected.closest('.tb-megamenu-row'));
+    var $rows = $row.parent();
+    var $nextRow = $row.next();
+    if ( $nextRow.length == 0 ) {
+      return;
+    }
+    var trow = $row.clone();
+    var trow1 = $nextRow.clone();
+    $row.replaceWith(trow1);
+    $nextRow.replaceWith(trow);
+
+    // Reset all events on new structure.
+    megamenu = $('#tb-megamenu-admin-mm-container').find('.tb-megamenu');
+    nav_items = megamenu.find('ul[class*="level"]>li>:first-child');
+    nav_subs = megamenu.find('.nav-child');
+    nav_cols = megamenu.find('[class*="span"]');
+    nav_all = nav_items.add(nav_subs).add(nav_cols);
+    bindEvents(nav_all);
+
+    currentSelected = $rows.find('.selected');
+  }
+
   actions.addColumn = function() {
     if (!currentSelected) {
       return;
