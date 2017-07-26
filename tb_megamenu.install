@@ -1,35 +1,46 @@
 <?php
+use Drupal\tb_megamenu\Entity\MegaMenuConfig;
+use Drupal\Core\Utility\UpdateException;
 
 /**
- * @file Create table tb_megamenu().
+ * Migrate any settings from the DB table to configuration objects
  */
+function tb_megamenu_update_8101(&$sandbox) {
+  // Migrate any settings from the DB table to configuration objects
+  $database = \Drupal::database();
 
-/**
- * Implements hook_schema().
- */
-function tb_megamenu_schema() {
-  $schema['tb_megamenus'] = array(
-    'fields' => array(
-      'menu_name' => array(
-        'type' => 'varchar',
-        'length' => 150,
-        'not null' => TRUE,
-      ),
-      'theme' => array(
-        'type' => 'varchar',
-        'length' => 100,
-        'not null' => TRUE,
-      ),
-      'block_config' => array(
-        'type' => 'text',
-        'not null' => FALSE,
-      ),
-      'menu_config' => array(
-        'type' => 'text',
-        'not null' => FALSE,
-      ),
-    ),
-    'primary key' => array('menu_name', 'theme'),
-  );
-  return $schema;
+  // Check if table exists.
+  if ($database->schema()->tableExists('tb_megamenus')) {
+    $query = $database->select('tb_megamenus', 't');
+    $query->fields('t', ['menu_name', 'theme', 'block_config', 'menu_config' ]);
+    $results = $query->execute();
+    $count = 0;
+    foreach ($results as $row ) {
+      $menu = $row->menu_name;
+      $theme = $row->theme;
+      $config = MegaMenuConfig::loadMenu($menu, $theme);
+      if ( $config == NULL ) {
+        $values = [
+          'id' => $id,
+        ];
+        $config = MegaMenuConfig::create($values);
+      }
+      $config->menu = $menu;
+      $config->theme = $theme;
+      $config->block_config = $row->block_config;
+      $config->menu_config = $row->menu_config;
+      try {
+        $config->save();
+      }
+      catch (Exception $e) {
+        throw new UpdateException(t('Failed to save configuration object for @menu / @theme', [
+          '@menu' => $menu,
+          '@theme' => $theme,
+        ]));
+      }
+      $count++;
+    }
+    $database->schema()->dropTable('tb_megamenus');
+  }
+  return t('Converted @count TB Mega Menu database settings to configuration entities.');
 }

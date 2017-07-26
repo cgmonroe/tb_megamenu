@@ -10,6 +10,7 @@
 namespace Drupal\tb_megamenu;
 
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\tb_megamenu\Entity\MegaMenuConfig;
 
 class TBMegaMenuBuilder {
 
@@ -33,13 +34,8 @@ class TBMegaMenuBuilder {
    * @return array
    */
   public static function getMenus($menu_name, $theme) {
-    $query = \Drupal::service('database')->select('menu_tree', 'm');
-    $query->leftJoin('tb_megamenus', 't', 't.menu_name = m.menu_name');
-    return $query->fields('t', array('menu_config', 'block_config'))
-            ->condition('t.theme', $theme)
-            ->condition('m.menu_name', $menu_name)
-            ->execute()
-            ->fetchObject();
+    $config = MegaMenuConfig::loadMenu($menu_name, $theme);
+    return $config;
   }
 
   public static function getMenuItem($menu_name, $plugin_id) {

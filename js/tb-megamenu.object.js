@@ -357,7 +357,7 @@ Drupal.TBMegaMenu = Drupal.TBMegaMenu || {};
     if ( !currentSelected ) {
       return;
     }
-    var $row = $(currentSelected.closest('.tb-megamenu-row'));
+    var $row = $(currentSelected.closest('.row-fluid'));
     var $rows = $row.parent();
     var $prevRow = $row.prev();
     if ( $prevRow.length == 0 ) {
@@ -367,7 +367,6 @@ Drupal.TBMegaMenu = Drupal.TBMegaMenu || {};
     var trow1 = $prevRow.clone();
     $row.replaceWith(trow1);
     $prevRow.replaceWith(trow);
-
     // Reset all events on new structure.
     megamenu = $('#tb-megamenu-admin-mm-container').find('.tb-megamenu');
     nav_items = megamenu.find('ul[class*="level"]>li>:first-child');
