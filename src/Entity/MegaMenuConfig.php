@@ -114,7 +114,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setBlockConfig()
    */
-  public function setBlockConfig(\stdClass $blockConfig) {
+  public function setBlockConfig($blockConfig) {
     $this->block_config = json_encode($blockConfig);
   }
 
@@ -123,7 +123,7 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
    * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setMenuConfig()
    */
-  public function setMenuConfig(\stdClass $menuConfig) {
+  public function setMenuConfig($menuConfig) {
     $this->menu_config = json_encode($menuConfig);
   }
 

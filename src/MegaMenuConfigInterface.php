@@ -33,9 +33,9 @@ interface MegaMenuConfigInterface extends ConfigEntityInterface {
   /**
    * Converts the stdClass properties to json and sets the blockConfig property
    *
-   * @param \stdClass $blockConfig
+   * @param mixed $blockConfig
    */
-  public function setBlockConfig(\stdClass $blockConfig);
+  public function setBlockConfig($blockConfig);
 
   /**
    * Gets the json decoded menu configuration
@@ -48,9 +48,9 @@ interface MegaMenuConfigInterface extends ConfigEntityInterface {
   /**
    * Converts the stdClass config to json and sets the menu property.
    *
-   * @param \stdClass $menuConfig
+   * @param mixed $menuConfig
    */
-  public function setMenuConfig(\stdClass $menuConfig);
+  public function setMenuConfig($menuConfig);
 
   /**
    * Loads the configuration info for the specified menu and theme

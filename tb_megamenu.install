@@ -5,16 +5,17 @@ use Drupal\Core\Utility\UpdateException;
 /**
  * Migrate any settings from the DB table to configuration objects
  */
-function tb_megamenu_update_8101(&$sandbox) {
+function tb_megamenu_update_8001(&$sandbox) {
   // Migrate any settings from the DB table to configuration objects
   $database = \Drupal::database();
+
+  $count = 0;
 
   // Check if table exists.
   if ($database->schema()->tableExists('tb_megamenus')) {
     $query = $database->select('tb_megamenus', 't');
     $query->fields('t', ['menu_name', 'theme', 'block_config', 'menu_config' ]);
     $results = $query->execute();
-    $count = 0;
     foreach ($results as $row ) {
       $menu = $row->menu_name;
       $theme = $row->theme;
@@ -42,5 +43,8 @@ function tb_megamenu_update_8101(&$sandbox) {
     }
     $database->schema()->dropTable('tb_megamenus');
   }
-  return t('Converted @count TB Mega Menu database settings to configuration entities.');
+  if ( $count ) {
+     return t('Converted @count TB Mega Menu database settings to configuration entities.', ['@count' => $count]);
+  }
+  return t('No existing MegaMenu configurations to convert.');
 }
