@@ -1,11 +1,13 @@
 <?php
+
 namespace Drupal\tb_megamenu\Form;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityForm;
-use Drupal\Core\Entity\Query\QueryFactory;
+use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\tb_megamenu\Entity\MegaMenuConfig;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Form handler for adding MegaMenuConfig entities.
@@ -13,13 +15,30 @@ use Drupal\tb_megamenu\Entity\MegaMenuConfig;
 class MegaMenuAdd extends EntityForm {
 
   /**
-   * Constructs an MegaMenuAdd object.
+   * The config factory service.
    *
-   * @param \Drupal\Core\Entity\Query\QueryFactory $entity_query
-   *   The entity query.
+   * @var Drupal\Core\Config\ConfigFactoryInterface
    */
-  public function __construct(QueryFactory $entity_query) {
-    $this->entityQuery = $entity_query;
+  protected $config;
+
+  /**
+   * The theme handler service.
+   *
+   * @var Drupal\Core\Extension\ThemeHandlerInterface
+   */
+  protected $themeHandler;
+
+  /**
+   * Constructs a MegaMenuAdd object.
+   *
+   * @param Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory service.
+   * @param Drupal\Core\Extension\ThemeHandlerInterface $theme_handler
+   *   The theme handler service.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, ThemeHandlerInterface $theme_handler) {
+    $this->config = $config_factory;
+    $this->themeHandler = $theme_handler;
   }
 
   /**
@@ -27,8 +46,9 @@ class MegaMenuAdd extends EntityForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-        $container->get('entity.query')
-        );
+      $container->get('config.factory'),
+      $container->get('theme_handler')
+    );
   }
 
   /**
@@ -39,45 +59,44 @@ class MegaMenuAdd extends EntityForm {
 
     $menus = menu_ui_get_menus();
 
-    $info = \Drupal::service('theme_handler')->listInfo();
+    $info = $this->themeHandler->listInfo();
     $themes = [];
     foreach ($info as $name => $theme) {
-      if ( !isset($theme->info['hidden']) ) {
+      if (!isset($theme->info['hidden'])) {
         $themes[$name] = $theme->info['name'];
       }
     }
-    $config = \Drupal::config('system.theme');
-    $default = $config->get('default');
+    $default = $this->config->get('system.theme')->get('default');
 
-    $form['menu'] = array(
-        '#type' => 'select',
-        '#options' => $menus,
-        '#title' => $this->t('Menu'),
-        '#maxlength' => 255,
-        '#default_value' => NULL,
-        '#description' => $this->t("Drupal Menu to use for the Mega Menu."),
-        '#required' => TRUE,
-    );
-    $form['theme'] = array(
-        '#type' => 'select',
-        '#options' => $themes,
-        '#title' => $this->t('Theme'),
-        '#maxlength' => 255,
-        '#default_value' => $default,
-        '#description' => $this->t("Drupal Theme associated with this Mega Menu."),
-        '#required' => TRUE,
-    );
-    $form['id'] = array(
+    $form['menu'] = [
+      '#type' => 'select',
+      '#options' => $menus,
+      '#title' => $this->t('Menu'),
+      '#maxlength' => 255,
+      '#default_value' => NULL,
+      '#description' => $this->t("Drupal Menu to use for the Mega Menu."),
+      '#required' => TRUE,
+    ];
+    $form['theme'] = [
+      '#type' => 'select',
+      '#options' => $themes,
+      '#title' => $this->t('Theme'),
+      '#maxlength' => 255,
+      '#default_value' => $default,
+      '#description' => $this->t("Drupal Theme associated with this Mega Menu."),
+      '#required' => TRUE,
+    ];
+    $form['id'] = [
       '#type' => 'value',
       '#value' => '',
-    );
+    ];
     $form['block_config'] = [
       '#type' => 'value',
       '#value' => NULL,
     ];
     $form['menu_config'] = [
-        '#type' => 'value',
-        '#value' => NULL,
+      '#type' => 'value',
+      '#value' => NULL,
     ];
 
     // You will need additional form elements for your custom properties.
@@ -85,31 +104,29 @@ class MegaMenuAdd extends EntityForm {
   }
 
   /**
-   *
-   * {@inheritDoc}
+   * {@inheritdoc}
    *
    * @see \Drupal\Core\Form\FormBase::validateForm()
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    if ( MegaMenuConfig::loadMenu($form_state->getValue('menu'), $form_state->getValue('theme')) !== NULL ) {
+    if (MegaMenuConfig::loadMenu($form_state->getValue('menu'), $form_state->getValue('theme')) !== NULL) {
       $form_state->setErrorByName('menu', $this->t("A Mega Menu has already been created for @menu / @theme", [
-       '@menu' => $form_state->getValue('menu'),
-       '@theme' => $form_state->getValue('theme'),
+        '@menu' => $form_state->getValue('menu'),
+        '@theme' => $form_state->getValue('theme'),
       ]));
     }
   }
 
   /**
-   *
-   * {@inheritDoc}
+   * {@inheritdoc}
    *
    * @see \Drupal\Core\Entity\EntityForm::submitForm()
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $id = $form_state->getValue('menu') . '__' . $form_state->getValue('theme');
-    $form_state->setValue('id', $id );
+    $form_state->setValue('id', $id);
 
     parent::submitForm($form, $form_state);
   }
@@ -123,7 +140,7 @@ class MegaMenuAdd extends EntityForm {
 
     if ($status) {
       drupal_set_message($this->t('Created the %label Mega Menu, edit it to configure.', [
-        '%label' => $megamenu->menu
+        '%label' => $megamenu->menu,
       ]));
     }
     else {
@@ -140,8 +157,9 @@ class MegaMenuAdd extends EntityForm {
    */
   public function exist($id) {
     $entity = $this->entityQuery->get('example')
-    ->condition('id', $id)
-    ->execute();
+      ->condition('id', $id)
+      ->execute();
     return (bool) $entity;
   }
+
 }

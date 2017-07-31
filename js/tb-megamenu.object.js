@@ -876,7 +876,7 @@ Drupal.TBMegaMenu = Drupal.TBMegaMenu || {};
           complete: function(msg) {
             var resp = $.parseJSON(msg.responseText);
             var content = resp.content ? resp.content : "";
-            var close_button = $('<span class="close icon-remove" title="' + Drupal.t("Remove this block") + '">&nbsp;</span>');
+            var close_button = $('<span class="close fa fa-times-circle" title="' + Drupal.t("Remove this block") + '">&nbsp;</span>');
             var id = resp.id ? resp.id : "";
             var currentElement = $("#" + id);
             if (currentElement.length) {

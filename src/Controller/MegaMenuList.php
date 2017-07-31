@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\tb_megamenu\Controller;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
@@ -30,4 +31,5 @@ class MegaMenuList extends ConfigEntityListBuilder {
     $row['theme'] = $entity->theme;
     return $row + parent::buildRow($entity);
   }
+
 }

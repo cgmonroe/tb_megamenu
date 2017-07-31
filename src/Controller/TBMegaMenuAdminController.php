@@ -1,23 +1,60 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\tb_megamenu\Controller\TBMegaMenuAdminController.
- */
-
 namespace Drupal\tb_megamenu\Controller;
 
-use Drupal\Core\Url;
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Menu\MenuTreeParameters;
-use Drupal\tb_megamenu\TBMegaMenuBuilder;
-use Symfony\Component\HttpFoundation\Response;
-use Drupal\Core\Config\Entity\ConfigEntityInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Drupal\Core\Url;
 use Drupal\tb_megamenu\Entity\MegaMenuConfig;
+use Drupal\tb_megamenu\TBMegaMenuBuilder;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Menu\MenuLinkTree;
+use Drupal\Core\Render\RendererInterface;
 
-
+/**
+ * Handler for configuring and saving MegaMenu settings.
+ */
 class TBMegaMenuAdminController extends ControllerBase {
+
+  /**
+   * The menu tree service.
+   *
+   * @var Drupal\Core\Menu\MenuLinkTree
+   */
+  protected $menuTree;
+
+  /**
+   * The renderer service.
+   *
+   * @var Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * Constructs a TBMegaMenuAdminController object.
+   *
+   * @param Drupal\Core\Menu\MenuLinkTree $menu_tree
+   *   The Menu Link Tree service.
+   * @param Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer service.
+   */
+  public function __construct(MenuLinkTree $menu_tree, RendererInterface $renderer) {
+    $this->menuTree = $menu_tree;
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+        $container->get('menu.link_tree'),
+        $container->get('renderer')
+        );
+  }
 
   /**
    * This is menu callback. Save configuration of TB Mega Menu.
@@ -28,7 +65,7 @@ class TBMegaMenuAdminController extends ControllerBase {
     switch ($action) {
       case 'load':
         $renderable_array = TBMegaMenuBuilder::renderBlock($_POST['menu_name'], $_POST['theme']);
-        $result = \Drupal::service('renderer')
+        $result = $this->renderer
           ->render($renderable_array)
           ->__toString();
         break;
@@ -42,14 +79,14 @@ class TBMegaMenuAdminController extends ControllerBase {
           // This is parameter to load menu_tree with the enabled links.
           $menu_tree_parameters = (new MenuTreeParameters)->onlyEnabledLinks();
           // Load menu items with condition.
-          $menu_items = \Drupal::menuTree()->load($menu_name, $menu_tree_parameters);
+          $menu_items = $this->menuTree->load($menu_name, $menu_tree_parameters);
           // Sync mega menu before store.
           TBMegaMenuBuilder::syncConfigAll($menu_items, $menu_config, 'backend');
           TBMegaMenuBuilder::syncOrderMenus($menu_config);
 
           $config = MegaMenuConfig::loadMenu($menu_name, $theme);
-          if ( $config === NULL ) {
-            drupal_set_message("Cannot create a new config object in save!");
+          if ($config === NULL) {
+            drupal_set_message($this->t("Cannot create a new config object in save!"));
             return;
           }
           $config->setBlockConfig($block_config);
@@ -63,16 +100,16 @@ class TBMegaMenuAdminController extends ControllerBase {
         $id = isset($_POST['id']) ? $_POST['id'] : NULL;
         $showblocktitle = isset($_POST['showblocktitle']) ? $_POST['showblocktitle'] : NULL;
         if ($block_id) {
-          $render = array(
+          $render = [
             '#theme' => 'tb_megamenu_block',
             '#block_id' => $block_id,
             '#section' => 'backend',
-            '#showblocktitle' => $showblocktitle
-          );
-          $content = \Drupal::service('renderer')
+            '#showblocktitle' => $showblocktitle,
+          ];
+          $content = $this->renderer
             ->render($render)
             ->__toString();
-          $result = json_encode(array('content' => $content, 'id' => $id));
+          $result = json_encode(['content' => $content, 'id' => $id]);
         }
         break;
 
@@ -93,14 +130,15 @@ class TBMegaMenuAdminController extends ControllerBase {
     $page['#attached']['library'][] = 'tb_megamenu/form.chosen';
     // Add a custom library.
     $page['#attached']['library'][] = 'tb_megamenu/form.configure-megamenu';
+    URL::fromRoute('tb_megamenu.admin.save', [], ['absolute' => TRUE]);
 
-    $abs_url_config = \Drupal::url('tb_megamenu.admin.save', array(), array('absolute' => TRUE));
+    $abs_url_config = URL::fromRoute('tb_megamenu.admin.save', [], ['absolute' => TRUE])->toString();
     $page['#attached']['drupalSettings']['TBMegaMenu']['saveConfigURL'] = $abs_url_config;
     if (!empty($tb_megamenu)) {
-      $page['tb_megamenu'] = array(
+      $page['tb_megamenu'] = [
         '#theme' => 'tb_megamenu_backend',
         '#menu_name' => $tb_megamenu->menu,
-      );
+      ];
     }
     return $page;
   }

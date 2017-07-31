@@ -61,7 +61,8 @@
 
 
 /* Dropdown ---*/
-.tb-megamenu .dropup, .dropdown {
+.tb-megamenu .dropup,
+.dropdown {
   position: relative;
 }
 
@@ -352,12 +353,12 @@
 
 /* Megamenu Responsive */
 @media (max-width: 767px) {
-.tb-megamenu .mega-inner {
+  .tb-megamenu .mega-inner {
     padding: 10px 20px;
   }
-.tb-megamenu .row-fluid,
-.tb-megamenu .mega-dropdown-menu,
-.tb-megamenu .row-fluid [class*="span"] {
+  .tb-megamenu .row-fluid,
+  .tb-megamenu .mega-dropdown-menu,
+  .tb-megamenu .row-fluid [class*="span"] {
     width: 100% !important;
     min-width: 100% !important;
     left: 0 !important;
@@ -368,19 +369,19 @@
     -ms-transform: none !important;
     -o-transform: none !important;
   }
-.tb-megamenu .row-fluid + .row-fluid {
+  .tb-megamenu .row-fluid + .row-fluid {
     padding-top: 10px;
     border-top: 1px solid #eeeeee;
   }
-.tb-megamenu .hidden-collapse,
-.tb-megamenu .always-show .caret,
-.tb-megamenu .sub-hidden-collapse > .nav-child,
-.tb-megamenu .sub-hidden-collapse .caret,
-.tb-megamenu .sub-hidden-collapse > a:after,
-.tb-megamenu .always-show .dropdown-submenu > a:after {
+  .tb-megamenu .hidden-collapse,
+  .tb-megamenu .always-show .caret,
+  .tb-megamenu .sub-hidden-collapse > .nav-child,
+  .tb-megamenu .sub-hidden-collapse .caret,
+  .tb-megamenu .sub-hidden-collapse > a:after,
+  .tb-megamenu .always-show .dropdown-submenu > a:after {
     display: none !important;
   }
-.tb-megamenu .mega-caption {
+  .tb-megamenu .mega-caption {
     display: none !important;
   }
 }

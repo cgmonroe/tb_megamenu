@@ -7,7 +7,7 @@
   background-color: #abba64;
 }
 
-.tb-megamenu .nav > li > a:focus, 
+.tb-megamenu .nav > li > a:focus,
 .tb-megamenu .nav > li > a:hover {
   color: #abba64;
 }
@@ -27,8 +27,8 @@
   color: #abba64;
 }
 
-.tb-megamenu .dropdown-menu li > a:hover, 
-.tb-megamenu .dropdown-menu li > a:focus, 
+.tb-megamenu .dropdown-menu li > a:hover,
+.tb-megamenu .dropdown-menu li > a:focus,
 .tb-megamenu .dropdown-submenu:hover > a {
   color: #abba64;
 }
@@ -55,13 +55,13 @@
 }
 
 @media (max-width: 979px) {
-.tb-megamenu .nav-collapse .nav > li > a:hover,
-.tb-megamenu .nav-collapse .nav > li > a:focus {    
-	color: #abba64;
+  .tb-megamenu .nav-collapse .nav > li > a:hover,
+  .tb-megamenu .nav-collapse .nav > li > a:focus {
+    color: #abba64;
   }
-.tb-megamenu .nav-collapse .nav > li.active > a:hover, 
-.tb-megamenu .nav-collapse .nav > li.active > a:focus {
-  background-color: #abba64;
-  color: #fff;
+  .tb-megamenu .nav-collapse .nav > li.active > a:hover,
+  .tb-megamenu .nav-collapse .nav > li.active > a:focus {
+    background-color: #abba64;
+    color: #fff;
 }
 }

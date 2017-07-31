@@ -64,8 +64,6 @@
   overflow: hidden;
 }
 
-
-
 /* Toolbox
 ---------------------*/
 #tb-megamenu-admin-mm-tb {
@@ -112,8 +110,8 @@
   color: #999999;
 }
 
-#tb-megamenu-admin-mm-tb .btn [class^="icon-"],
-#tb-megamenu-admin-mm-tb .btn [class*=" icon-"] {
+#tb-megamenu-admin-mm-tb .btn [class^="fa-"],
+#tb-megamenu-admin-mm-tb .btn [class*=" fa-"] {
   margin-right: 0;
 }
 
@@ -123,8 +121,6 @@
 #tb-megamenu-admin-mm-intro li > label a:focus {
   color: #0077bb;
 }
-
-
 
 /* Toolbox Actions ---- */
 .tb-megamenu-admin-mm-row .toolbox-actions-group {
@@ -159,7 +155,7 @@
 /* ADMIN LAYOUT
 ---------------------------------------------------*/
 .tb-megamenu #tb-megamenu-block-wrapper .chosen-container,
-.tb-megamenu #tb-megamenu-block-wrapper .chosen-drop{
+.tb-megamenu #tb-megamenu-block-wrapper .chosen-drop {
   width: 230px !important;
 }
 
@@ -169,8 +165,6 @@
   min-width: 100px;
   width: 100% !important;
 }
-
-
 
 /* Toolbar ---*/
 #tb-megamenu-admin fieldset {
@@ -193,8 +187,8 @@
   margin-left: 20px;
 }
 
-.tb-megamenu .btn [class^="icon-"],
-.tb-megamenu .btn [class*=" icon-"] {
+.tb-megamenu .btn [class^="fa-"],
+.tb-megamenu .btn [class*=" fa-"] {
   line-height: 1;
   margin-right: 5px;
   font-size: 14px;
@@ -205,12 +199,12 @@
 }
 
 /* Loading */
-#tb-megamenu-admin-tb-recompile .icon-loading,
-#tb-megamenu-admin-tb-recompile.loading .icon-check {
+#tb-megamenu-admin-tb-recompile .fa-loading,
+#tb-megamenu-admin-tb-recompile.loading .fa-check {
   display: none;
 }
 
-#tb-megamenu-admin-tb-recompile.loading .icon-loading {
+#tb-megamenu-admin-tb-recompile.loading .fa-loading {
   display: inline-block;
   background: url(../images/loading.gif) no-repeat !important;
   width: 14px;
@@ -229,7 +223,7 @@
   -o-box-sizing: border-box;
   background: #eee;
   border-bottom: 1px solid #e6e6e6;
-  border-top: 1px solid #e6e6e6; 
+  border-top: 1px solid #e6e6e6;
 }
 
 .tb-megamenu .admin-inline-toolbox ul {
@@ -255,8 +249,11 @@
 /* ADMIN FORMS
 ---------------------------------------------------*/
 /* Reset --- */
-.tb-megamenu form label, form span.faux-label,
-.tb-megamenu input#jform_title, input#jform_leveltitle, input#jform_grouptitle {
+.tb-megamenu form label,
+form span.faux-label,
+.tb-megamenu input#jform_title,
+input#jform_leveltitle,
+input#jform_grouptitle {
   font-size: 100%;
 }
 
@@ -275,18 +272,33 @@
 }
 
 /* Button --- */
-.tb-megamenu select, textarea,
-.tb-megamenu input[type="text"], input[type="password"], input[type="datetime"],
-.tb-megamenu input[type="datetime-local"], input[type="date"], input[type="month"],
-.tb-megamenu input[type="time"], input[type="week"], input[type="number"],
-.tb-megamenu input[type="email"], input[type="url"], input[type="search"],
-.tb-megamenu input[type="tel"], input[type="color"], .uneditable-input,
-.tb-megamenu .input-append .add-on, .input-prepend .add-on, .input-append .btn, .input-prepend .btn {
+.tb-megamenu select,
+textarea,
+.tb-megamenu input[type="text"],
+input[type="password"],
+input[type="datetime"],
+.tb-megamenu input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+.tb-megamenu input[type="time"],
+input[type="week"],
+input[type="number"],
+.tb-megamenu input[type="email"],
+input[type="url"],
+input[type="search"],
+.tb-megamenu input[type="tel"],
+input[type="color"],
+.uneditable-input,
+.tb-megamenu .input-append .add-on,
+.input-prepend .add-on,
+.input-append .btn,
+.input-prepend .btn {
   height: 22px;
   line-height: 22px;
 }
 
-.tb-megamenu select, input[type="file"] {
+.tb-megamenu select,
+input[type="file"] {
   height: 32px;
   line-height: 32px;
 }
@@ -488,8 +500,8 @@
 /* @group Active  */
 .tb-megamenu .chosen-container-active .chosen-single {
   -webkit-box-shadow: 0 0 5px rgba(0,0,0,.3);
-  -moz-box-shadow   : 0 0 5px rgba(0,0,0,.3);
-  box-shadow        : 0 0 5px rgba(0,0,0,.3);
+  -moz-box-shadow: 0 0 5px rgba(0,0,0,.3);
+  box-shadow: 0 0 5px rgba(0,0,0,.3);
   border: 1px solid #07b;
 }
 
@@ -502,7 +514,7 @@
   background-image: -moz-linear-gradient(top, #eeeeee 20%, #ffffff 80%);
   background-image: -o-linear-gradient(top, #eeeeee 20%, #ffffff 80%);
   background-image: linear-gradient(#eeeeee 20%, #ffffff 80%);
-  border-bottom-left-radius : 0;
+  border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
 
@@ -521,12 +533,12 @@
 /* @end */
 
 /* Fix for Font Awesome */
-.tb-megamenu [class^="icon-"]:before,
-.tb-megamenu [class*=" icon-"]:before {
+.tb-megamenu [class^="fa-"]:before,
+.tb-megamenu [class*=" fa-"]:before {
   font-family: "FontAwesome";
 }
 
-.tb-megamenu .icon-eye-open:before,
-.tb-megamenu .icon-eye:before {
+.tb-megamenu .fa-eye-open:before,
+.tb-megamenu .fa-eye:before {
   content: "\f06e";
 }

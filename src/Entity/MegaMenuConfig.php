@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\tb_megamenu\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBase;
@@ -33,7 +34,7 @@ use Drupal\tb_megamenu\MegaMenuConfigInterface;
 class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface {
 
   /**
-   * The MegaMenu ID
+   * The MegaMenu ID.
    *
    * @var string
    */
@@ -47,14 +48,14 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
   public $menu;
 
   /**
-   * The related theme name
+   * The related theme name.
    *
    * @var string
    */
   public $theme;
 
   /**
-   * The json encoded string of block settings
+   * The json encoded string of block settings.
    *
    * @var string
    */
@@ -68,8 +69,8 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
   public $menu_config;
 
   /**
+   * {@inheritdoc}
    *
-   * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setMenu()
    */
   public function setMenu($menuName) {
@@ -80,38 +81,38 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
   }
 
   /**
+   * {@inheritdoc}
    *
-   * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setTheme()
    */
   public function setTheme($themeName) {
-    if (isset($this->id) && isset($this->menu) && $this->id == $this-menu ) {
+    if (isset($this->id) && isset($this->menu) && $this->id == $this - menu) {
       $this->id = $this->id . '__' . $themeName;
     }
     $this->theme = $themeName;
   }
 
   /**
+   * {@inheritdoc}
    *
-   * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::getBlockConfig()
    */
   public function getBlockConfig() {
-    return isset($this->block_config) ? json_decode($this->block_config, true) : array();
+    return isset($this->block_config) ? json_decode($this->block_config, TRUE) : [];
   }
 
   /**
+   * {@inheritdoc}
    *
-   * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::getMenuConfig()
    */
   public function getMenuConfig() {
-    return isset($this->menu_config) ? json_decode($this->menu_config, true) : array();
+    return isset($this->menu_config) ? json_decode($this->menu_config, TRUE) : [];
   }
 
   /**
+   * {@inheritdoc}
    *
-   * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setBlockConfig()
    */
   public function setBlockConfig($blockConfig) {
@@ -119,8 +120,8 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
   }
 
   /**
+   * {@inheritdoc}
    *
-   * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::setMenuConfig()
    */
   public function setMenuConfig($menuConfig) {
@@ -128,8 +129,8 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
   }
 
   /**
+   * {@inheritdoc}
    *
-   * {@inheritDoc}
    * @see \Drupal\tb_megamenu\MegaMenuConfigInterface::loadMenu()
    */
   public static function loadMenu($menu, $theme) {
@@ -147,4 +148,5 @@ class MegaMenuConfig extends ConfigEntityBase implements MegaMenuConfigInterface
     $this->addDependency('theme', $this->theme);
     return $this;
   }
+
 }
