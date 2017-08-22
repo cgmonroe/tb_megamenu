@@ -234,6 +234,20 @@ function template_preprocess_tb_megamenu_subnav(array &$vars) {
   $vars['lis'] = [];
   foreach ($col as $tb_item) {
     $item = TBMegaMenuBuilder::getMenuItem($vars['menu_name'], $tb_item['plugin_id']);
+    if ( empty($tb_item)) {
+      // TODO: figure out how to handle NULLs in columns.
+      continue;
+    }
+    if ( $item->link == NULL) {
+      \Drupal::logger('tb_megamenu')->warning("Found null link in tb_item: @tb_item, menu: @menu, plugin_id: @plugin level: @level", [
+        '@tb_item' => is_null($tb_item) ? "NULL" : print_r($tb_item, TRUE),
+        '@menu' => $vars['menu_name'],
+        '@plugin' => $tb_item['plugin_id'],
+        '@level' => $level,
+      ]);
+      continue;
+    }
+
     $weight = $item->link->getWeight();
     $vars['lis'][$weight] = [
       '#theme' => 'tb_megamenu_item',

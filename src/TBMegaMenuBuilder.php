@@ -323,7 +323,7 @@ class TBMegaMenuBuilder {
    * Add item config values to menu config array.
    *
    * @param array $menu_items
-   *   The menu machine name.
+   *   The menu tree for this config.
    * @param array $menu_config
    *   The menu configuration.
    * @param string $section
@@ -399,14 +399,25 @@ class TBMegaMenuBuilder {
                 }
               }
             }
-            elseif (!self::isBlockContentEmpty($tb_item['block_id'], $section)) {
-              unset($item_config['rows_content'][$i][$j]['col_content'][$k]);
-              if (empty($item_config['rows_content'][$i][$j]['col_content'])) {
-                unset($item_config['rows_content'][$i][$j]);
+            elseif ($tb_item['type'] == 'block' && ! empty($tb_item['block_id'])) {
+              if (!self::isBlockContentEmpty($tb_item['block_id'], $section)) {
+                unset($item_config['rows_content'][$i][$j]['col_content'][$k]);
+                if (empty($item_config['rows_content'][$i][$j]['col_content'])) {
+                  unset($item_config['rows_content'][$i][$j]);
+                }
+                if (empty($item_config['rows_content'][$i])) {
+                  unset($item_config['rows_content'][$i]);
+                }
               }
-              if (empty($item_config['rows_content'][$i])) {
-                unset($item_config['rows_content'][$i]);
+            }
+            else {
+              if ( empty($tb_item) ) {
+                // TODO: Figure out the correct handling of NULLs in columns.
+                continue;
               }
+              \Drupal::logger('tb_megamenu')->warning('Unknown / invalid column content: @content', [
+                 '@content' => print_r($tb_item, TRUE),
+              ]);
             }
           }
         }

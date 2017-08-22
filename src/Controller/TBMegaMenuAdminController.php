@@ -138,6 +138,7 @@ class TBMegaMenuAdminController extends ControllerBase {
       $page['tb_megamenu'] = [
         '#theme' => 'tb_megamenu_backend',
         '#menu_name' => $tb_megamenu->menu,
+        '#block_theme' => $tb_megamenu->theme,
       ];
     }
     return $page;
