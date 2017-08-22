@@ -29,7 +29,7 @@ entity.tb_megamenu.edit_form:
     _controller: '\Drupal\tb_megamenu\Controller\TBMegaMenuAdminController::configMegaMenu'
   requirements:
     _permission: 'administer tb_megamenu'
-    tb_megamenu: ^[a-zA-Z0-9_]+
+    tb_megamenu: ^[a-zA-Z0-9_-]+
 
 entity.tb_megamenu.delete_form:
   path: '/admin/structure/tb-megamenu/{tb_megamenu}/delete'
@@ -38,4 +38,4 @@ entity.tb_megamenu.delete_form:
     _title: 'Delete Mega Menu'
   requirements:
     _permission: 'administer tb_megamenu'
-    tb_megamenu: ^[a-zA-Z0-9_]+
+    tb_megamenu: ^[a-zA-Z0-9_-]+
